@@ -20,4 +20,4 @@
 | Guillermo Andrés García Vázquez | Desarrollador |[@MemazoG](https://github.com/MemazoG)|
 
 
-Este proyecto está desarrollad siguiendo el stack **MERN** (MongoDB, Express, React, Node).
+Este proyecto está desarrollado siguiendo el stack **MERN** (MongoDB, Express, React, Node).
