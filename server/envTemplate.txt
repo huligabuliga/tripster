@@ -1,0 +1,1 @@
+MONGO=mongodb+srv://atripser:<password>@cluster0.owzbhsw.mongodb.net/?retryWrites=true&w=majority
