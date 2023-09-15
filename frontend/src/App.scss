@@ -1,0 +1,19 @@
+.sidebar {
+  background-color: #07bd4c;
+  width: 200px;
+  height: 100vh;
+  ul {
+    list-style: none;
+    padding: 20px;
+    li {
+      margin-bottom: 20px;
+      border-bottom: 0.5px solid;
+      padding-left: 10px;
+      color: white;
+    }
+  }
+}
+
+.sidebar ul li:first-child {
+  border-bottom: none;
+}
