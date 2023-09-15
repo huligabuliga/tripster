@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
 import NewExpense from './pages/NewExpense'
+import SettleUp from './pages/SettleUp'
 function App() {
   return (
     <Routes>
@@ -10,6 +11,7 @@ function App() {
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
       <Route path='newexpense' element={<NewExpense />} />
+      <Route path='settleup' element={<SettleUp />} />
     </Routes>
   );
 }
