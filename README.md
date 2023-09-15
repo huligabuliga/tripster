@@ -16,8 +16,8 @@ _Producto desarrollado para Proyecto Integrador para el Desarrollo de Soluciones
 Este proyecto está desarrollado siguiendo el stack **MERN** (MongoDB, Express, React, Node).
 
 **Instrucciones**
-backend: npm i
+backend: npm i <br />
 npm run start:dev
 
-frontend: npm i
+frontend: npm i <br />
 npm run start
