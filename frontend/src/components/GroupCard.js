@@ -2,9 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const GroupCard = ({ _id, name, description}) => {
+  const groupRoute = `/group/${_id}`
   return (
     <div className='flex w-3/4 sm:w-5/12 align-center content-center rounded-xl m-4 p-2 shadow-xl'>
-        <Link to='/login'>
+        <Link to={groupRoute}>
             <div className='w-1/3'>
                 <img src='/cf_imago.png' alt='Group'></img>
             </div>

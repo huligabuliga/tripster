@@ -60,7 +60,7 @@ const Group = ({ name='Carne asada en casa de Juan', description='Carne asada en
 
         {/** New Expense Button */}
         <div className='flex justify-center mt-2'>
-            <Link to="/">
+            <Link to="/NewExpense">
                 <button
                     className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                     New Expense
