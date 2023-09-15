@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     try{
         const hash = bcrypt.hashSync(req.body.password, 10)
         const newUser = User({
@@ -51,5 +51,11 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
+    res.clearCookie("accessToken", {
+        sameSite: "none",
+        secure: true,
 
+    })
+    .status(200)
+    .send("logged out")
 }
