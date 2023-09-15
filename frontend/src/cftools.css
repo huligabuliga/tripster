@@ -1,0 +1,7 @@
+.cfbg_01 {
+    background-image: url('../public/backgrounds/cf_background1.png');
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
