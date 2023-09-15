@@ -5,6 +5,7 @@ import { createGroup } from '../controller/group.controller.js'
 const groupRouter = express.Router()
 
 // creategroup 
-groupRouter.post("/register", createGroup )
+groupRouter.post("/group/register", createGroup )
+
 
 export default groupRouter
