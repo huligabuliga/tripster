@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import ExpenseCard from '../components/ExpenseCard'
 
-const Group = ({ name='Group Name', description='Description' }) => {
+const Group = ({ name='Carne asada en casa de Juan', description='Carne asada en casa del Juan.' }) => {
+  const dummyExpenses = [
+    {_id: '56tgvbhi8uyhj', name: 'Compra de la carne', categories: ['Comida'], currency: 'MXN', totalAmount: '500', payer: 'Juan', payees: [{user: 'Pedro', shareAmount: 250, sharePercentage: 50}, {user: 'Juan', shareAmount: 250, sharePercentage: 50}]},
+    {_id: 'bgy7890plmnbf', name: 'Refrescos', categories: ['Bebida'], currency: 'MXN', totalAmount: '150', payer: 'Pedro', payees: [{user: 'Juan', shareAmount: 75, sharePercentage: 50}, {user: 'Pedro', shareAmount: 75, sharePercentage: 50}]},
+    {_id: 'vt67hn2m1kass', name: 'Limones, tomates, chiles y aguacates', categories: ['Comida'], currency: 'MXN', totalAmount: '128', payer: 'Pedro', payees: [{user: 'Juan', shareAmount: 64, sharePercentage: 50}, {user: 'Pedro', shareAmount: 64, sharePercentage: 50}]},
+  ]
+  const [expenses, setExpenses] = useState(dummyExpenses)
+
   return (
     <div className='w-full min-h-screen'>
         {/** Group Info (Image, name, desc, ) */}
-        <div className='flex flex-col sm:flex-row w-4/5 justify-center align-center m-3 p-2'>
+        <div className='flex flex-col sm:flex-row justify-center align-center m-3 p-2'>
             <div className=''>
                 <img src='/cf_imago.png' className='h-80 w-full object-cover' alt='Group'></img>
             </div>
             <div className='w-auto sm:w-2/3 flex flex-col'>
                 <div className='mb-auto'>
-                    <h2 className='font-bold text-xl mt-2'>{ name }</h2>
-                    <p className='font-normal text-base mt-2'>{ description }</p>
+                    <h2 className='font-bold text-3xl mt-2'>{ name }</h2>
+                    <p className='font-normal text-xl mt-2'>{ description }</p>
                 </div>
 
                 <div className='flex flex-wrap justify-around'>
@@ -39,8 +47,15 @@ const Group = ({ name='Group Name', description='Description' }) => {
         </div>
 
         {/** Expenses Container */}
-        <div className='flex justify-center bg-green-300'>
-            Expenses will appear here
+        <div className='flex flex-col items-center'>
+            {
+                expenses.map((expense) => (
+                    <ExpenseCard
+                        key={expense._id}
+                        expense={expense}
+                     />
+                ))
+            }
         </div>
 
         {/** New Expense Button */}
