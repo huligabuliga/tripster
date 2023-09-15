@@ -3,7 +3,7 @@ import { FaRegEnvelope, FaKey, FaUser } from "react-icons/fa"
 
 const Register = () => {
   return (
-    <div className='justify-center bg-green-300 h-screen w-full'>
+    <div className='flex justify-center items-center bg-green-300 h-screen w-full'>
         <div className='flex flex-col justify-center  max-w-[400px] w-full px-2 py-3 mx-auto text-center bg-slate-50 rounded-lg shadow-lg shadow-gray-400'>
             <img src='/coinfusionLogoGreen.jpg' alt='Coinfusion Logo'></img>
             <h2 className='text-3xl font-bold mb-2'>Create Account</h2>
