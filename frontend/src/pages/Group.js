@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ExpenseCard from '../components/ExpenseCard'
-
+import '../cftools.css';
 const Group = ({ name='Carne asada en casa de Juan', description='Carne asada en casa del Juan.' }) => {
   const dummyExpenses = [
     {_id: '56tgvbhi8uyhj', name: 'Compra de la carne', categories: ['Comida'], currency: 'MXN', totalAmount: '500', payer: 'Juan', payees: [{user: 'Pedro', shareAmount: 250, sharePercentage: 50}, {user: 'Juan', shareAmount: 250, sharePercentage: 50}]},

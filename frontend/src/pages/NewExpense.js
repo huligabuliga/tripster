@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 // css file 
-import './NewExpense.css';
+// import './NewExpense.css';
 
 const NewExpense = () => {
   const [name, setName] = useState('');

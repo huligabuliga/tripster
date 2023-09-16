@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 // css file 
 // import './JoinGroup.css';
+import '../cftools.css';
 import { useNavigate } from 'react-router-dom';
 const JoinGroup = () => {
     const [code, setCode] = useState('');
@@ -39,7 +40,9 @@ const JoinGroup = () => {
                     />
                 </div>
                 {error && <p className="text-red-500">{error}</p>}
-                <button type="submit" className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">Join</button>
+                <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-2 cursor-pointer">
+                    Join
+                </button>
             </form>
         </div>
     );

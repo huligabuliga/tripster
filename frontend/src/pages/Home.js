@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import GroupCard from '../components/GroupCard'
-
+import '../cftools.css';
 const Home = () => {
     const dummyGroups = [
         {_id: '435678iyhjadfa', name: 'Carne asada', description: 'Carnita asada description', code: 'ABC123', members: [], expenses: []},

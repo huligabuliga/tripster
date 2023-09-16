@@ -60,7 +60,7 @@ const Login = () => {
                 </div>
 
                 <button
-                    className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer"
+                    className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer !important"
                     type="submit"
                 >
                     Log In

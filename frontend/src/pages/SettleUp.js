@@ -1,7 +1,7 @@
 import React from 'react';
 // // css file 
 // import './SettleUp.css';
-
+import '../cftools.css';
 const SettleUp = () => {
   const transactions = [
     { payer: 'Alice', payee: 'Bob', amount: 10 },
