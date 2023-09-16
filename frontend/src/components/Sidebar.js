@@ -6,9 +6,9 @@ const Sidebar = () => {
   return (
     <div className='h-screen w-80 flex flex-col bg-green-500'>
         {/** Logo */}
-        <div>
+        <Link to='/'>
             <img src='/cf_logo_wh.png' className='w-full h-auto p-2' alt="Coinfusion Logo"></img>
-        </div>
+        </Link>
 
         {/** Home */}
         <div>
