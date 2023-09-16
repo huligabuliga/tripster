@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Group from './pages/Group'
 import NewExpense from './pages/NewExpense'
 import SettleUp from './pages/SettleUp'
+import JoinGroup from './pages/JoinGroup'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path='group/:groupid' element={<Group />} />
       <Route path='newexpense' element={<NewExpense />} />
       <Route path='settleup' element={<SettleUp />} />
+      <Route path='joingroup' element={<JoinGroup />} />
     </Routes>
   );
 }
