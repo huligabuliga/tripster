@@ -45,7 +45,7 @@ const Sidebar = () => {
 
         {/** My Account */}
         <div>
-            <Link to='/profile'>
+            <Link to='/profile/123'>
                 <div className='flex flex-row justify-center text-slate-50'>
                     <FaUser className=" text-3xl mx-4" />
                     <h2 className='font-semibold text-xl flex-grow'>My Account</h2>
