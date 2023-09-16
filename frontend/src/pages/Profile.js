@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { FaEdit, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { FaEdit, FaSignOutAlt } from 'react-icons/fa'
 
 const Profile = () => {
   const params = useParams()
@@ -9,7 +9,7 @@ const Profile = () => {
 
   const fetchUsername = async () => {
     try {
-      // Call API ask for username by id
+      // Call API ask for username by id (userid)
       // And use setUser() to assign it
     }
     catch(error) {
@@ -19,7 +19,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchUsername()
-  })
+  }, [])
 
   return (
     <div className='w-full min-h-screen'>
@@ -41,7 +41,7 @@ const Profile = () => {
         </h2>
 
         {/** Edit Profile */}
-        <Link to='/profile/:userid/edit'>
+        <Link to='edit'>
           <div className='flex flex-row justify-center py-5'>
             <FaEdit className=" text-3xl mr-4" />
             <h2 className='font-semibold text-xl flex-grow'>Edit profile</h2>
