@@ -1,9 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { FaHome, FaSearch, FaBell, FaUser } from 'react-icons/fa'
 
 const Sidebar = () => {
+  const location = useLocation()
+
   return (
+    (location.pathname === '/login' | location.pathname === '/register') ? (<div></div>) : (
     <div className='h-screen w-80 flex flex-col bg-green-500'>
         {/** Logo */}
         <Link to='/'>
@@ -50,6 +53,7 @@ const Sidebar = () => {
             </Link>
         </div>
     </div>
+    )
   )
 }
 
