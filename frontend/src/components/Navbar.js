@@ -1,9 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { FaHome, FaSearch, FaBell, FaUser } from 'react-icons/fa'
 
 const Navbar = () => {
+  const location = useLocation()
+
   return (
+    (location.pathname === '/login' | location.pathname === '/register') ? (<div></div>) : (
     <div className='w-screen h-16 sticky bottom-0 flex flex-row justify-around items-center bg-green-500'>
         {/** Home */}
         <div>
@@ -37,7 +40,7 @@ const Navbar = () => {
 
         {/** My Account */}
         <div>
-            <Link to='profile'>
+            <Link to='profile/123'>
                 <div className='flex flex-col text-slate-50 items-center w-20'>
                     <FaUser className='text-2xl mt-1' />
                     <h2 className='font-semibold text-xs'>My Account</h2>
@@ -45,6 +48,7 @@ const Navbar = () => {
             </Link>
         </div>
     </div>
+    )
   )
 }
 
