@@ -24,11 +24,14 @@ const JoinGroup = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold mb-4">Join Group</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="w-full min-h-screen flex flex-col">
+            {/** Header */}
+            <h1 className="text-3xl font-bold my-4 text-center">Join Group</h1>
+
+            {/** Join Group Section */}
+            <form onSubmit={handleSubmit} className='flex flex-col items-center mx-4 mt-10'>
                 <div className="mb-4">
-                    <label htmlFor="code" className="block font-bold mb-2">Code:</label>
+                    <label htmlFor="code" className="block font-bold text-xl mb-2">Group Code:</label>
                     <input
                         type="text"
                         className="w-full px-3 py-2 border rounded"
@@ -44,6 +47,11 @@ const JoinGroup = () => {
                     Join
                 </button>
             </form>
+
+            {/** Group code explanation */}
+            <p className='text-gray-500/40 px-4 text-center'>
+                Group codes are 5 characters in length and allow you to join a group. Get a group's code from one of its members.
+            </p>
         </div>
     );
 };
