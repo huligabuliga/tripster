@@ -1,110 +1,199 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Select from 'react-select'
+import { categoryList, currencyList, groupMembers } from '../utils/constants';
+import { transformPayees, payeeChange } from '../utils/newExpenseLogic';
+import SplitSelection from '../components/SplitSelection';
+
 // css file 
 // import './NewExpense.css';
 
-const NewExpense = () => {
+const NewExpense = ({ members=groupMembers}) => {
   const [name, setName] = useState('');
   const [categories, setCategories] = useState([]);
   const [currency, setCurrency] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [payer, setPayer] = useState('');
-  const [payees, setPayees] = useState([]);
+  const [payer, setPayer] = useState(null);
+  const [payees, setPayees] = useState(members);
+  const [split, setSplit] = useState('equally');
+
+  // Add shareAmount and sharePercentage properties to payees
+  useEffect(() => {
+    initializeShares()
+  }, [members])
+
+  const initializeShares = () => {
+    setPayees((prevPayees) => {
+      return prevPayees.map((payee) => ({
+        ...payee,
+        involved: false,
+        shareAmount: 0,
+        sharePercentage: 0,
+      }))
+    })
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const response = await axios.post('/api/expenses', {
-        name,
-        categories,
-        currency,
-        totalAmount,
-        payer,
-        payees,
-      });
+      // Clean up payees array before sending it to backend
+      formatPayees()
+      console.log('Payees', payees)
 
-      console.log(response.data);
+      const response = await axios.post('/api/expenses', {
+        name: name,
+        categories: categories.map(c => (c.value)),
+        currency: currency.value,
+        totalAmount: totalAmount,
+        payer: payer.value,
+        payees,
+      })
+
+      console.log(response.data)
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   };
 
+  // Transforms the payees array depending on the split type
+  const formatPayees = () => {
+    // Logic handled in transformPayees. Returns payees array of objects ready to send in request to backend
+    const updatedPayees = transformPayees([...payees], split, totalAmount)
+    
+    // Set new state to payees
+    setPayees(updatedPayees)
+  }
+
+  // Updates state of selected categories
+  const handleCategoriesChange = (selectedCategories) => {
+    setCategories(selectedCategories)
+  }
+
+  // Update state of selected currency
+  const handleCurrencyChange = (selectedCurrency) => {
+    setCurrency(selectedCurrency)
+  }
+
+  // Update state of selected payer
+  const handlePayerChange = (selectedPayer) => {
+    setPayer(selectedPayer)
+  }
+
+  // Update state of selected split type
+  const handleSplitChange = (selectedSplit) => {
+    setSplit(selectedSplit)
+  }
+
+  // Update state of payees (involved, shareAmount, sharePercentage)
+  const handlePayeesChange = (payeeId, update) => {
+    // Find the group member to be updated
+    const updatedPayees = payeeChange([...payees], payeeId, update, split)
+
+    // Set new state to payees
+    setPayees(updatedPayees)
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">New Expense</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block font-bold mb-2">Name:</label>
+    <div className='w-full min-h-screen'>
+      {/** Header */}
+      <h1 className='text-3xl font-bold my-4 text-center'>
+        New Expense
+      </h1>
+
+      {/** Form */}
+      <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 items-center'>
+        {/** Description */}
+        <div className='flex flex-col'>
+          <h2 className='font-semibold text-xl'>
+            Name
+          </h2>
           <input
-            type="text"
-            className="w-full px-3 py-2 border rounded"
-            id="name"
+            className='w-72 py-2 outline-none cursor-pointer border-2 border-gray-200 rounded-sm'
+            type='text'
+            id='name'
             value={name}
+            placeholder='E.g Hotel booking'
             onChange={(event) => setName(event.target.value)}
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="categories" className="block font-bold mb-2">Categories:</label>
-          <input
-            type="text"
-            className="w-full px-3 py-2 border rounded"
-            id="categories"
+
+        {/** Category */}
+        <div className='flex flex-col'>
+          <h2 className='font-semibold text-xl'>
+            Category
+          </h2>
+          <Select
+            options={categoryList}
             value={categories}
-            onChange={(event) => setCategories(event.target.value.split(','))}
+            onChange={handleCategoriesChange}
+            isMulti
+            closeMenuOnSelect={false}
+            className='bg-gray-100 w-72 outline-none cursor-pointer'
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="currency" className="block font-bold mb-2">Currency:</label>
-          <input
-            type="text"
-            className="w-full px-3 py-2 border rounded"
-            id="currency"
-            value={currency}
-            onChange={(event) => setCurrency(event.target.value)}
-            required
-          />
+
+        {/** Price */}
+        <div className='flex flex-col'>
+          <h2 className='font-semibold text-xl'>
+            Total Amount
+          </h2>
+          <div className='flex flex-row w-72 gap-x-2'>
+            <Select
+              options={currencyList}
+              value={currency}
+              onChange={handleCurrencyChange}
+              closeMenuOnSelect={true}
+              className='bg-gray-100 outline-none cursor-pointer w-2/3'
+            />
+            <input
+              className='outline-none cursor-pointer w-1/3 border-2 border-gray-200 rounded-sm'
+              type='number'
+              id='totalAmount'
+              min='0'
+              value={totalAmount}
+              onChange={(event) => setTotalAmount(event.target.value)}
+              required
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="totalAmount" className="block font-bold mb-2">Total Amount:</label>
-          <input
-            type="number"
-            className="w-full px-3 py-2 border rounded"
-            id="totalAmount"
-            value={totalAmount}
-            onChange={(event) => setTotalAmount(event.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="payer" className="block font-bold mb-2">Payer:</label>
-          <input
-            type="text"
-            className="w-full px-3 py-2 border rounded"
-            id="payer"
+
+        {/** Paid by */}
+        <div className=''>
+          <h2 className='font-semibold text-xl'>
+            Paid by
+          </h2>
+
+          <Select
+            options={members.map(mem => ({ label: mem.username, value: mem._id }))}
             value={payer}
-            onChange={(event) => setPayer(event.target.value)}
-            required
+            onChange={handlePayerChange}
+            closeMenuOnSelect={true}
+            className='bg-gray-100 w-72 outline-none cursor-pointer'
           />
+          
         </div>
-        <div className="mb-4">
-          <label htmlFor="payees" className="block font-bold mb-2">Payees:</label>
-          <select
-            className="w-full px-3 py-2 border rounded"
-            id="payees"
-            value={payees}
-            onChange={(event) => setPayees(Array.from(event.target.selectedOptions, option => option.value))}
-            multiple
-          >
-            <option value="Alice">Alice</option>
-            <option value="Bob">Bob</option>
-            <option value="Charlie">Charlie</option>
-            <option value="Dave">Dave</option>
-          </select>
-        </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-      </form>
+
+        {/** Split */}
+        <SplitSelection 
+          members={groupMembers} 
+          currency={currency} 
+          split={split} 
+          handleSplitChange={handleSplitChange} 
+          handlePayeesChange={handlePayeesChange}
+          resetShareValues={initializeShares}
+        />
+
+
+        {/** Add Expense Button */}
+        <button
+          className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer !important"
+          type="submit"
+        >
+          Add Expense
+        </button>
+      </form>  
     </div>
   );
 };
