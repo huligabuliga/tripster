@@ -12,6 +12,8 @@ import Sidebar from './components/Sidebar'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
 
+import UserInfo from './pages/GetUser'
+
 function App() {
   let isMobile = useMediaQuery(640) // Know if device size is mobile to decide between sidebar/navbar
 
@@ -29,6 +31,7 @@ function App() {
         <Route path='joingroup' element={<JoinGroup />} />
         <Route path='profile/:userid' element={<Profile />} />
         <Route path='profile/:userid/edit' element={<EditProfile />} />
+        <Route path="users/:userId" exact component={UserInfo} />
       </Routes>
       {/** If mobile size, display bottom navbar */}
       { isMobile && <Navbar />}

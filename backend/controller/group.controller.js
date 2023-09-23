@@ -16,3 +16,23 @@ export const createGroup = async (req, res) => {
     }
 }
 
+export const getGroupExpenses = async (req, res) => {
+    try {
+      const groupId = req.params.groupId;
+  
+      // busca grupo por ID
+      const group = await Group.findById(groupId).populate('expenses');
+  
+      if (!group) {
+        return res.status(404).json({ message: 'Grupo no encontrado' });
+      }
+  
+      const groupExpenses = group.expenses;
+  
+      res.status(200).json(groupExpenses);
+    } catch (error) {
+      console.error('Error al obtener expenses del grupo:', error);
+      res.status(500).json({ message: 'Error al obtener expenses del grupo' });
+    }
+  };
+
