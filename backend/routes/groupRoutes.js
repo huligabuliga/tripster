@@ -1,12 +1,25 @@
-import express from 'express'
-import { Group } from '../models/Group.js'
-import { createGroup, getGroupExpenses } from '../controller/group.controller.js'
+import express from 'express';
+import { Group } from '../models/Group.js';
+import { createGroup, getGroupExpenses, getGroupById } from '../controller/group.controller.js';
 
-const groupRouter = express.Router()
+const groupRouter = express.Router();
 
-// creategroup 
-groupRouter.post("/group/register", createGroup )
-groupRouter.get('/:groupId/expenses', getGroupExpenses)
+// routes are as following:
+// /api/groups/register
+// /api/groups/:groupId/expenses
+// /api/groups/:groupId
+// /api/groups/:userId
 
 
-export default groupRouter
+// Create a new group
+groupRouter.post('/register', createGroup);
+
+// Get group expenses
+groupRouter.get('/:groupId/expenses', getGroupExpenses);
+
+// Get group by ID
+groupRouter.get('/:groupId', getGroupById);
+
+// get groups with user id
+groupRouter.get('/:userId', getGroupById)
+export default groupRouter;

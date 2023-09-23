@@ -33,9 +33,11 @@ app.use(cookieParser())
 // Routes
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
-app.use('/api/groups', groupRouter)
 app.use('/api/expenses', expenseRouter)
 app.use('/api/transactions', transactionRouter)
+
+// Mount groupRouter here
+app.use('/api/groups', groupRouter)
 
 //error middleware
 app.use((err, req, res, next) => {
@@ -44,6 +46,7 @@ app.use((err, req, res, next) => {
 
     return res.status(errorStatus).send(errorMessage);
 })
+
 // Start server
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}!`)

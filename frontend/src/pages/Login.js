@@ -16,11 +16,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-           const res = await newRequest.post('/auth/login', {email, password})
-           localStorage.setItem('currentUser', JSON.stringify(res.data))
-        //    navigate to homepage
-        navigate('/')
-            console.log(res)
+            const res = await newRequest.post('/auth/login', {email, password})
+            localStorage.setItem('currentUser', JSON.stringify(res.data))
+            // navigate to user's homepage
+            navigate(`/home/${res.data._id}`)
         } 
         catch (error) {
             setError(error.response.data.message)
