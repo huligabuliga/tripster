@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
+import NotFound from './pages/NotFound'
 
 import UserInfo from './pages/GetUser'
 
@@ -32,6 +33,8 @@ function App() {
         <Route path='profile/:userid' element={<Profile />} />
         <Route path='profile/:userid/edit' element={<EditProfile />} />
         <Route path="users/:userId" exact component={UserInfo} />
+
+        <Route path='*' element={<NotFound />} /> { /** This route must be the last one */}
       </Routes>
       {/** If mobile size, display bottom navbar */}
       { isMobile && <Navbar />}
