@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// css file 
-// import './JoinGroup.css';
-import '../cftools.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 const JoinGroup = () => {
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
-
-    const navigate = useNavigate()
+    const [success, setSuccess] = useState(false); // new state variable
+    const { userId } = useParams();
+    const navigate = useNavigate();
+    console.log(userId);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        console.log("Data sent:", { userId, code });
         try {
-            const response = await axios.post('/api/groups/join', { code });
+            const response = await axios.post('http://localhost:3001/api/groups/join', { userId, code });
 
             console.log(response.data);
-            navigate('/')
+            setSuccess(true); // set success state to true
         } catch (err) {
             setError(err.response.data.message);
         }
+    };
+
+    const handleBack = () => {
+        navigate(`/home/${userId}`);
     };
 
     return (
@@ -43,8 +47,12 @@ const JoinGroup = () => {
                     />
                 </div>
                 {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">You have successfully joined the group!</p>} {/* success message */}
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-2 cursor-pointer">
                     Join
+                </button>
+                <button type="button" onClick={handleBack} className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full my-2 cursor-pointer">
+                    Back
                 </button>
             </form>
 

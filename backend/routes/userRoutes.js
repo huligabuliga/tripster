@@ -5,11 +5,16 @@ import { verifyToken } from '../middleware/jwt.js';
 
 
 const userRouter = express.Router();
+// the routes are as following:
+// /api/users/:userId/info
+// /api/users/:userId/groups
+// /api/users/:userId
+
 
 // Busca a usuario por su ID
 userRouter.get('/users/:userId/info', getUserInfo);
 
 userRouter.delete("/:id", verifyToken,deleteUser)
-userRouter.get('/users/:userId/groups', getUserGroups);
+userRouter.get('/:userId/groups', getUserGroups);
 
 export default userRouter
