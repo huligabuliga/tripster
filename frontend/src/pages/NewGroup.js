@@ -11,6 +11,8 @@ const NewGroup = () => {
     const [code, setCode] = useState('');
     const navigate = useNavigate();
     
+    console.log(userId);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
