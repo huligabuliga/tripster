@@ -14,6 +14,8 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import NewGroup from './pages/NewGroup';
 import UserInfo from './pages/GetUser';
+import NotFound from './pages/NotFound'
+
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -44,6 +46,7 @@ function App() {
         <Route path='profile/:userid/edit' element={<EditProfile />} />
         <Route path='/home/:userId/newGroup' element={<NewGroup />} />
         <Route path='users/:userId' exact component={UserInfo} />
+          <Route path='*' element={<NotFound />} /> { /** This route must be the last one */}
       </Routes>
       {/** If mobile size, display bottom navbar */}
       {isMobile && <Navbar />}
