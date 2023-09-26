@@ -3,21 +3,23 @@ import axios from 'axios';
 // css file 
 // import './JoinGroup.css';
 import '../cftools.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const JoinGroup = () => {
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { userId } = useParams();
+    console.log(userId);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        console.log("Data sent:", { userId, code });
         try {
-            const response = await axios.post('/api/groups/join', { code });
+            const response = await axios.post('http://localhost:3001/api/groups/join', { userId, code });
 
             console.log(response.data);
-            navigate('/')
+            
         } catch (err) {
             setError(err.response.data.message);
         }
