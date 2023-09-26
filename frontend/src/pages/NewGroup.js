@@ -73,7 +73,7 @@ const NewGroup = () => {
                     <label htmlFor='description' className='text-lg font-bold mb-2'>Description</label>
                     <textarea
                         id='description'
-                        value={description}
+                        defaultValue={description}
                         onChange={(event) => setDescription(event.target.value)}
                         className='border rounded-lg py-2 px-3 mb-2'
                     />

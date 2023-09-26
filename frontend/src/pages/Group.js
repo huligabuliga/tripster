@@ -1,14 +1,48 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ExpenseCard from '../components/ExpenseCard'
 import '../cftools.css';
-const Group = ({ name='Carne asada en casa de Juan', description='Carne asada en casa del Juan.' }) => {
-  const dummyExpenses = [
-    {_id: '56tgvbhi8uyhj', name: 'Compra de la carne', categories: ['Comida'], currency: 'MXN', totalAmount: '500', payer: 'Juan', payees: [{user: 'Pedro', shareAmount: 250, sharePercentage: 50}, {user: 'Juan', shareAmount: 250, sharePercentage: 50}]},
-    {_id: 'bgy7890plmnbf', name: 'Refrescos', categories: ['Bebida'], currency: 'MXN', totalAmount: '150', payer: 'Pedro', payees: [{user: 'Juan', shareAmount: 75, sharePercentage: 50}, {user: 'Pedro', shareAmount: 75, sharePercentage: 50}]},
-    {_id: 'vt67hn2m1kass', name: 'Limones, tomates, chiles y aguacates', categories: ['Comida'], currency: 'MXN', totalAmount: '128', payer: 'Pedro', payees: [{user: 'Juan', shareAmount: 64, sharePercentage: 50}, {user: 'Pedro', shareAmount: 64, sharePercentage: 50}]},
-  ]
-  const [expenses, setExpenses] = useState(dummyExpenses)
+
+const Group = () => {
+  const { groupId } = useParams();
+  const [group, setGroup] = useState(null);
+  const [expenses, setExpenses] = useState([]);
+
+  useEffect(() => {
+    const fetchGroup = async () => {
+      try {
+        console.log(groupId);
+        const response = await fetch(`http://localhost:3001/api/groups/${groupId}`);
+        const data = await response.json();
+        console.log(data);
+        setGroup(data);
+      } catch (error) {
+        console.error('Error fetching group:', error);
+      }
+    };
+
+    fetchGroup();
+  }, [groupId]);
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/groups/${groupId}/expenses`);
+        const data = await response.json();
+        setExpenses(data);
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
+      }
+    };
+
+    fetchExpenses();
+  }, [groupId]);
+
+  if (!group) {
+    return <div>Loading...</div>;
+  }
+
+  const { name, description } = group;
 
   return (
     <div className='w-full min-h-screen'>
@@ -46,15 +80,15 @@ const Group = ({ name='Carne asada en casa de Juan', description='Carne asada en
             </div>
         </div>
 
-        {/** Expenses Container */}
-        <div className='flex flex-col items-center'>
+           {/** Expenses Container */}
+           <div className='flex flex-col items-center'>
             {
-                expenses.map((expense) => (
+                expenses.length > 0 ? expenses.map((expense) => (
                     <ExpenseCard
                         key={expense._id}
                         expense={expense}
                      />
-                ))
+                )) : <div>No expenses found.</div>
             }
         </div>
 

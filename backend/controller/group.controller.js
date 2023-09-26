@@ -6,6 +6,7 @@ export const createGroup = async (req, res) => {
   try {
       const newGroup = Group({
           name: req.body.name,
+          description: req.body.description,
           members: req.body.members,
           transactions: req.body.transactions,
           code: Math.floor(Math.random() * 100000).toString().substr(0, 5),

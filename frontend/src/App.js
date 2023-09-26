@@ -38,7 +38,7 @@ function App() {
       <Route path='/home/:userId' element={<Home />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
-        <Route path='group/:groupid' element={<Group />} />
+        <Route path='group/:groupId' element={<Group />} />
         <Route path='newexpense' element={<NewExpense />} />
         <Route path='settleup' element={<SettleUp />} />
         <Route path='/home/:userId/joinGroup' element={<JoinGroup />} />
