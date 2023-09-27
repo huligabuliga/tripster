@@ -34,10 +34,10 @@ function App() {
       {/** If bigger than mobile, display sidebar */}
       {!isMobile && <Sidebar />}
       <Routes>
-        {/* <Route path='/' element={<LandingPage />} /> */}
-      <Route path='/home/:userId' element={<Home />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
+
+        <Route path='/home/:userId' element={<Home />} />
         <Route path='group/:groupid' element={<Group />} />
         <Route path='newexpense' element={<NewExpense />} />
         <Route path='settleup' element={<SettleUp />} />
@@ -46,7 +46,9 @@ function App() {
         <Route path='profile/:userid/edit' element={<EditProfile />} />
         <Route path='/home/:userId/newGroup' element={<NewGroup />} />
         <Route path='users/:userId' exact component={UserInfo} />
-          <Route path='*' element={<NotFound />} /> { /** This route must be the last one */}
+        
+        { /** Catch all route */}
+        <Route path='*' element={<NotFound />} />
       </Routes>
       {/** If mobile size, display bottom navbar */}
       {isMobile && <Navbar />}
