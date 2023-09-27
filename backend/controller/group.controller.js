@@ -96,4 +96,41 @@ export const joinGroup = async (req, res) => {
     res.status(500).json({ message: 'Error joining group' });
   }
 }
+
+// returns a list of group.members and user.username
+// export const groupMembers = [
+//   { _id: '1235645fd', username: 'Juan' },
+//   { _id: '1rgdvsdf4', username: 'Pedro' },
+//   { _id: '1012iedsf', username: 'Miguel Ángel' },
+//   { _id: '9nv9w8fwe', username: 'Guillermo' },
+//   { _id: '678uhjsdf', username: 'Daniel' },
+//   { _id: '6tfhjui9i', username: 'Mario' },
+// ]
+
+export const getGroupMembers = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+
+    // Find group by ID
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    const groupMembers = group.members;
+
+    // Find users with group.members that matches user.id
+    const users = await User.find({ _id: { $in: groupMembers } });
+
+    // Transform the users array to an array of objects with only _id and username properties
+    const transformedUsers = users.map(user => ({ _id: user._id, username: user.username }));
+
+    res.status(200).json(transformedUsers);
+  } catch (error) {
+    console.error('Error getting group members:', error);
+    res.status(500).json({ message: 'Error getting group members' });
+  }
+}
+
   
