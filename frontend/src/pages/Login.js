@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { FaRegEnvelope, FaKey } from "react-icons/fa"
 import newRequest from '../utils/newRequest'
+import AuthContext from '../context/AuthProvider';
 
 import '../cftools.css';
 
 const Login = () => {
-
+    const { setAuth } = useContext(AuthContext)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -16,8 +17,16 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await newRequest.post('/auth/login', {email, password})
-            localStorage.setItem('currentUser', JSON.stringify(res.data))
+            const res = await newRequest.post('http://localhost:3001/api/auth/login', {email, password})
+            console.log(JSON.stringify(res?.data))
+
+            // Store access token
+            const accessToken = res?.data?.accessToken
+
+            // Store
+            setAuth({ user: email, password, accessToken})
+
+            // localStorage.setItem('currentUser', JSON.stringify(res.data))
             // navigate to user's homepage
             navigate(`/home/${res.data._id}`)
         } 
