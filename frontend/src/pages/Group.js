@@ -88,7 +88,7 @@ const Group = () => {
                         key={expense._id}
                         expense={expense}
                      />
-                )) : <div>No expenses found.</div>
+                )) : <div>No expenses yet, click to add a new expense</div>
             }
         </div>
 
