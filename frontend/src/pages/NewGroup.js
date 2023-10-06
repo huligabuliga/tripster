@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const NewGroup = () => {
+    const { groupId } = useParams();
     const { userId } = useParams();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -12,7 +13,9 @@ const NewGroup = () => {
     const navigate = useNavigate();
     
     console.log(userId);
+    console.log(groupId)
 
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {

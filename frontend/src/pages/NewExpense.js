@@ -1,55 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select'
-import { categoryList, currencyList, groupMembers } from '../utils/constants';
+import { categoryList, currencyList } from '../utils/constants';
 import { transformPayees, payeeChange } from '../utils/newExpenseLogic';
 import SplitSelection from '../components/SplitSelection';
 
 // css file 
 // import './NewExpense.css';
 
-const NewExpense = ({ members=groupMembers}) => {
+const NewExpense = () => {
+  const { groupId } = useParams();
   const [name, setName] = useState('');
   const [categories, setCategories] = useState([]);
   const [currency, setCurrency] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
   const [payer, setPayer] = useState(null);
-  const [payees, setPayees] = useState(members);
+  const [payees, setPayees] = useState([]);
   const [split, setSplit] = useState('equally');
 
-  // Add shareAmount and sharePercentage properties to payees
+  // Fetch group members from backend and initialize payees state
   useEffect(() => {
-    initializeShares()
-  }, [members])
+    const fetchGroupMembers = async () => {
+      try {
+        const response = await axios.post(`http://localhost:3001/api/groups/${groupId}/members`);
+        const groupMembers = response.data;
+        initializePayees(groupMembers);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchGroupMembers();
+  }, [groupId]);
 
-  const initializeShares = () => {
-    setPayees((prevPayees) => {
-      return prevPayees.map((payee) => ({
-        ...payee,
-        involved: false,
-        shareAmount: 0,
-        sharePercentage: 0,
-      }))
-    })
-  }
+  // Add shareAmount and sharePercentage properties to payees
+  const initializePayees = (groupMembers) => {
+    const payees = groupMembers.map((payee) => ({
+      ...payee,
+      involved: false,
+      shareAmount: 0,
+      sharePercentage: 0,
+    }));
+    setPayees(payees);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
+  
     try {
       // Clean up payees array before sending it to backend
       formatPayees()
       console.log('Payees', payees)
-
-      const response = await axios.post('/api/expenses', {
+      console.log('response:', {
         name: name,
         categories: categories.map(c => (c.value)),
         currency: currency.value,
         totalAmount: totalAmount,
         payer: payer.value,
         payees,
+        group: groupId, // Add the groupId to the request payload
       })
-
+  
+      const response = await axios.post('http://localhost:3001/api/expenses/register', {
+        name: name,
+        categories: categories.map(c => (c.value)),
+        currency: currency.value,
+        totalAmount: totalAmount,
+        payer: payer.value,
+        payees,
+        group: groupId, // Add the groupId to the request payload
+      })
+  
       console.log(response.data)
     } catch (err) {
       console.error(err)
@@ -166,7 +187,7 @@ const NewExpense = ({ members=groupMembers}) => {
           </h2>
 
           <Select
-            options={members.map(mem => ({ label: mem.username, value: mem._id }))}
+            options={payees.map(mem => ({ label: mem.username, value: mem._id }))}
             value={payer}
             onChange={handlePayerChange}
             closeMenuOnSelect={true}
@@ -177,12 +198,12 @@ const NewExpense = ({ members=groupMembers}) => {
 
         {/** Split */}
         <SplitSelection 
-          members={groupMembers} 
+          members={payees} 
           currency={currency} 
           split={split} 
           handleSplitChange={handleSplitChange} 
           handlePayeesChange={handlePayeesChange}
-          resetShareValues={initializeShares}
+          resetShareValues={initializePayees}
         />
 
 
