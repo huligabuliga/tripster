@@ -22,17 +22,27 @@ function App() {
   const isMobile = useMediaQuery(640);
 
   useEffect(() => {
-    // Fetch user data and set the userId state variable
-    fetch('/api/user')
-      .then(response => response.json())
-      .then(data => setUserId(data.userId))
-      .catch(error => console.error(error));
+    // Check if user data is already stored in localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      setUserId(currentUser._id);
+    } else {
+      // Fetch user data and set the userId state variable
+      fetch('/api/user')
+        .then(response => response.json())
+        .then(data => {
+          if (data.userId) {
+            setUserId(data.userId);
+          }
+        })
+        .catch(error => console.error(error));
+    }
   }, []);
 
   return (
     <div className='flex flex-col sm:flex-row'>
       {/** If bigger than mobile, display sidebar */}
-      {!isMobile && <Sidebar />}
+      {!isMobile && <Sidebar userId={userId} />}
       <Routes>
         {/* <Route path='/' element={<LandingPage />} /> */}
       <Route path='/home/:userId' element={<Home />} />
@@ -42,10 +52,11 @@ function App() {
         <Route path='group/:groupId/newexpense' element={<NewExpense />} />
         <Route path='settleup' element={<SettleUp />} />
         <Route path='/home/:userId/joinGroup' element={<JoinGroup />} />
-        <Route path='profile/:userid' element={<Profile />} />
+        <Route path='/profile/:userId' element={<Profile />} />
         <Route path='profile/:userid/edit' element={<EditProfile />} />
         <Route path='/home/:userId/newGroup' element={<NewGroup />} />
         <Route path='users/:userId' exact component={UserInfo} />
+        <Route path='/profile/:userId' element={<Profile />} />
           <Route path='*' element={<NotFound />} /> { /** This route must be the last one */}
       </Routes>
       {/** If mobile size, display bottom navbar */}

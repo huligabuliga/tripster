@@ -3,23 +3,26 @@ import { Link, useParams } from 'react-router-dom'
 import { FaEdit, FaSignOutAlt } from 'react-icons/fa'
 
 const Profile = () => {
-  const params = useParams()
-  const userid = params.userid // Gets user's id from the URL and uses it to fetch its information
-  const [user, setUser] = useState({username: 'Memo'})
+  const { userId } = useParams();
+  const [user, setUser] = useState(null);
 
-  const fetchUsername = async () => {
+  const fetchUser = async () => {
     try {
-      // Call API ask for username by id (userid)
-      // And use setUser() to assign it
+      const response = await fetch(`http://localhost:3001/api/users/${userId}/info`);
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.log(`Error: ${error}`);
     }
-    catch(error) {
-      console.log(`Error: ${error}`)
-    }
-  }
+  };
 
   useEffect(() => {
-    fetchUsername()
-  }, [])
+    fetchUser();
+  }, [userId]);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='w-full min-h-screen'>
@@ -41,7 +44,7 @@ const Profile = () => {
         </h2>
 
         {/** Edit Profile */}
-        <Link to='edit'>
+        <Link to={`/profile/${userId}/edit`}>
           <div className='flex flex-row justify-center py-5'>
             <FaEdit className=" text-3xl mr-4" />
             <h2 className='font-semibold text-xl flex-grow'>Edit profile</h2>
@@ -60,4 +63,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Profile;

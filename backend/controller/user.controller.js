@@ -25,7 +25,6 @@ export const getUserInfo = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Agregar mas cosas del usuario si se necesita
     const userInfo = {
       username: user.username,
       email: user.email,
