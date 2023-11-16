@@ -15,6 +15,7 @@ import EditProfile from './pages/EditProfile';
 import NewGroup from './pages/NewGroup';
 import UserInfo from './pages/GetUser';
 import NotFound from './pages/NotFound'
+import RequireAuth from './components/RequireAuth';
 
 
 function App() {
@@ -34,18 +35,22 @@ function App() {
       {/** If bigger than mobile, display sidebar */}
       {!isMobile && <Sidebar />}
       <Routes>
+        {/** Public routes */}
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
 
-        <Route path='/home/:userId' element={<Home />} />
-        <Route path='group/:groupid' element={<Group />} />
-        <Route path='newexpense' element={<NewExpense />} />
-        <Route path='settleup' element={<SettleUp />} />
-        <Route path='/home/:userId/joinGroup' element={<JoinGroup />} />
-        <Route path='profile/:userid' element={<Profile />} />
-        <Route path='profile/:userid/edit' element={<EditProfile />} />
-        <Route path='/home/:userId/newGroup' element={<NewGroup />} />
-        <Route path='users/:userId' exact component={UserInfo} />
+        {/** Protected routes */}
+        <Route element={<RequireAuth />} >
+          <Route path='/home/:userId' element={<Home />} />
+          <Route path='group/:groupid' element={<Group />} />
+          <Route path='newexpense' element={<NewExpense />} />
+          <Route path='settleup' element={<SettleUp />} />
+          <Route path='/home/:userId/joinGroup' element={<JoinGroup />} />
+          <Route path='profile/:userid' element={<Profile />} />
+          <Route path='profile/:userid/edit' element={<EditProfile />} />
+          <Route path='/home/:userId/newGroup' element={<NewGroup />} />
+          <Route path='users/:userId' exact component={UserInfo} />
+        </Route>
         
         { /** Catch all route */}
         <Route path='*' element={<NotFound />} />
