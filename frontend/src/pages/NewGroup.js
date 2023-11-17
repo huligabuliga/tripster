@@ -12,8 +12,7 @@ const NewGroup = () => {
     const [code, setCode] = useState('');
     const navigate = useNavigate();
     
-    console.log(userId);
-    console.log(groupId)
+    console.log("user id:", userId);
 
     
     const handleSubmit = async (event) => {
@@ -31,8 +30,10 @@ const NewGroup = () => {
     
             // Check if the group was created successfully
             if (response.ok) {
+                //groupid created
+                console.log('groupId: ', data.groupId);
                 setShowCode(true);
-                setCode(data.code);
+                setCode(data.code); // Access the group code here
                 setSuccessMessage('Group created successfully!');
                 setErrorMessage('');
             } else {

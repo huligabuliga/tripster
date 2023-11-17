@@ -3,28 +3,33 @@ import { User } from "../models/user.model.js";
 
 //create group 
 export const createGroup = async (req, res) => {
-  try {
-      const newGroup = Group({
-          name: req.body.name,
-          description: req.body.description,
-          members: req.body.members,
-          transactions: req.body.transactions,
-          code: Math.floor(Math.random() * 100000).toString().substr(0, 5),
-      })
-
-      await newGroup.save();
-
-      // Update user with new group ID
-      const userId = req.body.members[0]; // Assuming the first member is the user who created the group
-      const user = await User.findById(userId);
-      user.groups.push(newGroup._id);
-      await user.save();
-
-      res.status(201).json({ message: "Group created successfully" });
-  } catch (err) {
-      res.status(500).json({ message: err.message });
+    try {
+        const newGroup = Group({
+            name: req.body.name,
+            description: req.body.description,
+            members: req.body.members,
+            transactions: req.body.transactions,
+            code: Math.floor(Math.random() * 100000).toString().substr(0, 5),
+        })
+  
+        await newGroup.save();
+  
+        // Update user with new group ID
+        const userId = req.body.members[0]; // Assuming the first member is the user who created the group
+        const user = await User.findById(userId);
+        user.groups.push(newGroup._id);
+        await user.save();
+  
+        res.status(201).json({ 
+            message: "Group created successfully",
+            groupId: newGroup._id, // Include the groupId in the response
+            code: newGroup.code // Include the group code in the response
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
   }
-}
+
 export const getGroupExpenses = async (req, res) => {
     try {
       const groupId = req.params.groupId;

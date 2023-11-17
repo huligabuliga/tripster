@@ -5,7 +5,8 @@ import Select from 'react-select'
 import { categoryList, currencyList } from '../utils/constants';
 import { transformPayees, payeeChange } from '../utils/newExpenseLogic';
 import SplitSelection from '../components/SplitSelection';
-
+import { useNavigate } from 'react-router-dom';
+import ExpenseCard from '../components/ExpenseCard';
 // css file 
 // import './NewExpense.css';
 
@@ -18,7 +19,12 @@ const NewExpense = () => {
   const [payer, setPayer] = useState(null);
   const [payees, setPayees] = useState([]);
   const [split, setSplit] = useState('equally');
-
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();;
+  const [isExpenseAdded, setIsExpenseAdded] = useState(false);
+  const [response, setResponse] = useState(null);
+  
+  
   // Fetch group members from backend and initialize payees state
   useEffect(() => {
     const fetchGroupMembers = async () => {
@@ -49,8 +55,8 @@ const NewExpense = () => {
   
     try {
       // Clean up payees array before sending it to backend
-      formatPayees()
-      console.log('Payees', payees)
+      const updatedPayees = formatPayees();
+      console.log('Payees', updatedPayees)
       console.log('response:', {
         name: name,
         categories: categories.map(c => (c.value)),
@@ -67,15 +73,26 @@ const NewExpense = () => {
         currency: currency.value,
         totalAmount: totalAmount,
         payer: payer.value,
-        payees,
-        group: groupId, // Add the groupId to the request payload
+        payees: updatedPayees,
+        group: groupId,
       })
-  
+
       console.log(response.data)
+
+      setIsExpenseAdded(true);
+
+      // Redirect to group page after 5 seconds
+      setTimeout(() => {
+        navigate(`/group/${groupId}`);
+      }, 5000);
     } catch (err) {
       console.error(err)
     }
   };
+
+
+
+  
 
   // Transforms the payees array depending on the split type
   const formatPayees = () => {
@@ -122,6 +139,12 @@ const NewExpense = () => {
         New Expense
       </h1>
 
+      {/** Show success message when expense is added */}
+      {isExpenseAdded && 
+  <div className="flex items-center justify-center h-screen">
+    <p className="text-4xl text-green-500">Expense has been added successfully!</p>
+ </div>
+}
       {/** Form */}
       <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 items-center'>
         {/** Description */}
