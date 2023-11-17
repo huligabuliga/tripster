@@ -2,11 +2,11 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FaHome, FaSearch, FaBell, FaUser } from 'react-icons/fa'
 
-const Sidebar = () => {
-  const location = useLocation()
-
+const Sidebar = ({ userId }) => {
+  const location = useLocation();
+    
   return (
-    (location.pathname === '/login' | location.pathname === '/register') ? (<div></div>) : (
+    (location.pathname === '/login' || location.pathname === '/register') ? (<div></div>) : (
     <div className='h-screen w-80 flex flex-col bg-green-500'>
         {/** Logo */}
         <Link to='/'>
@@ -15,7 +15,7 @@ const Sidebar = () => {
 
         {/** Home */}
         <div>
-            <Link to='/'>
+            <Link to={`/home/${userId}`}>
                 <div className='flex flex-row justify-center py-5 text-slate-50'>
                     <FaHome className=" text-3xl mx-4" />
                     <h2 className='font-semibold text-xl flex-grow'>Home</h2>
@@ -45,7 +45,7 @@ const Sidebar = () => {
 
         {/** My Account */}
         <div>
-            <Link to='/profile/123'>
+            <Link to={`/profile/${userId}`}>
                 <div className='flex flex-row justify-center text-slate-50'>
                     <FaUser className=" text-3xl mx-4" />
                     <h2 className='font-semibold text-xl flex-grow'>My Account</h2>
@@ -57,4 +57,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default Sidebar;

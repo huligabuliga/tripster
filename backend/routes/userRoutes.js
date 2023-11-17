@@ -12,7 +12,7 @@ const userRouter = express.Router();
 
 
 // Busca a usuario por su ID
-userRouter.get('/users/:userId/info', getUserInfo);
+userRouter.get('/:userId/info', getUserInfo);
 
 userRouter.delete("/:id", verifyToken,deleteUser)
 userRouter.get('/:userId/groups', getUserGroups);

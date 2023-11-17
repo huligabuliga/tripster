@@ -1,60 +1,98 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select'
-import { categoryList, currencyList, groupMembers } from '../utils/constants';
+import { categoryList, currencyList } from '../utils/constants';
 import { transformPayees, payeeChange } from '../utils/newExpenseLogic';
 import SplitSelection from '../components/SplitSelection';
-
+import { useNavigate } from 'react-router-dom';
+import ExpenseCard from '../components/ExpenseCard';
 // css file 
 // import './NewExpense.css';
 
-const NewExpense = ({ members=groupMembers}) => {
+const NewExpense = () => {
+  const { groupId } = useParams();
   const [name, setName] = useState('');
   const [categories, setCategories] = useState([]);
   const [currency, setCurrency] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
   const [payer, setPayer] = useState(null);
-  const [payees, setPayees] = useState(members);
+  const [payees, setPayees] = useState([]);
   const [split, setSplit] = useState('equally');
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();;
+  const [isExpenseAdded, setIsExpenseAdded] = useState(false);
+  const [response, setResponse] = useState(null);
+  
+  
+  // Fetch group members from backend and initialize payees state
+  useEffect(() => {
+    const fetchGroupMembers = async () => {
+      try {
+        const response = await axios.post(`http://localhost:3001/api/groups/${groupId}/members`);
+        const groupMembers = response.data;
+        initializePayees(groupMembers);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchGroupMembers();
+  }, [groupId]);
 
   // Add shareAmount and sharePercentage properties to payees
-  useEffect(() => {
-    initializeShares()
-  }, [members])
-
-  const initializeShares = () => {
-    setPayees((prevPayees) => {
-      return prevPayees.map((payee) => ({
-        ...payee,
-        involved: false,
-        shareAmount: 0,
-        sharePercentage: 0,
-      }))
-    })
-  }
+  const initializePayees = (groupMembers) => {
+    const payees = groupMembers.map((payee) => ({
+      ...payee,
+      involved: false,
+      shareAmount: 0,
+      sharePercentage: 0,
+    }));
+    setPayees(payees);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
+  
     try {
       // Clean up payees array before sending it to backend
-      formatPayees()
-      console.log('Payees', payees)
-
-      const response = await axios.post('/api/expenses', {
+      const updatedPayees = formatPayees();
+      console.log('Payees', updatedPayees)
+      console.log('response:', {
         name: name,
         categories: categories.map(c => (c.value)),
         currency: currency.value,
         totalAmount: totalAmount,
         payer: payer.value,
         payees,
+        group: groupId, // Add the groupId to the request payload
+      })
+  
+      const response = await axios.post('http://localhost:3001/api/expenses/register', {
+        name: name,
+        categories: categories.map(c => (c.value)),
+        currency: currency.value,
+        totalAmount: totalAmount,
+        payer: payer.value,
+        payees: updatedPayees,
+        group: groupId,
       })
 
       console.log(response.data)
+
+      setIsExpenseAdded(true);
+
+      // Redirect to group page after 5 seconds
+      setTimeout(() => {
+        navigate(`/group/${groupId}`);
+      }, 5000);
     } catch (err) {
       console.error(err)
     }
   };
+
+
+
+  
 
   // Transforms the payees array depending on the split type
   const formatPayees = () => {
@@ -63,6 +101,9 @@ const NewExpense = ({ members=groupMembers}) => {
     
     // Set new state to payees
     setPayees(updatedPayees)
+
+    // Return the updated payees array
+    return updatedPayees;
   }
 
   // Updates state of selected categories
@@ -101,6 +142,12 @@ const NewExpense = ({ members=groupMembers}) => {
         New Expense
       </h1>
 
+      {/** Show success message when expense is added */}
+      {isExpenseAdded && 
+  <div className="flex items-center justify-center h-screen">
+    <p className="text-4xl text-green-500">Expense has been added successfully!</p>
+ </div>
+}
       {/** Form */}
       <form onSubmit={handleSubmit} className='flex flex-col gap-y-4 items-center'>
         {/** Description */}
@@ -166,7 +213,7 @@ const NewExpense = ({ members=groupMembers}) => {
           </h2>
 
           <Select
-            options={members.map(mem => ({ label: mem.username, value: mem._id }))}
+            options={payees.map(mem => ({ label: mem.username, value: mem._id }))}
             value={payer}
             onChange={handlePayerChange}
             closeMenuOnSelect={true}
@@ -177,12 +224,12 @@ const NewExpense = ({ members=groupMembers}) => {
 
         {/** Split */}
         <SplitSelection 
-          members={groupMembers} 
+          members={payees} 
           currency={currency} 
           split={split} 
           handleSplitChange={handleSplitChange} 
           handlePayeesChange={handlePayeesChange}
-          resetShareValues={initializeShares}
+          resetShareValues={initializePayees}
         />
 
 

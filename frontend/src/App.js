@@ -23,17 +23,27 @@ function App() {
   const isMobile = useMediaQuery(640);
 
   useEffect(() => {
-    // Fetch user data and set the userId state variable
-    fetch('/api/user')
-      .then(response => response.json())
-      .then(data => setUserId(data.userId))
-      .catch(error => console.error(error));
+    // Check if user data is already stored in localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      setUserId(currentUser._id);
+    } else {
+      // Fetch user data and set the userId state variable
+      fetch('/api/user')
+        .then(response => response.json())
+        .then(data => {
+          if (data.userId) {
+            setUserId(data.userId);
+          }
+        })
+        .catch(error => console.error(error));
+    }
   }, []);
 
   return (
     <div className='flex flex-col sm:flex-row'>
       {/** If bigger than mobile, display sidebar */}
-      {!isMobile && <Sidebar />}
+      {!isMobile && <Sidebar userId={userId} />}
       <Routes>
         {/** Public routes */}
         <Route path='login' element={<Login />} />

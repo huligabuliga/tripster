@@ -13,8 +13,9 @@ const NewGroup = () => {
     const [code, setCode] = useState('');
     const navigate = useNavigate();
     
-    console.log(userId);
+    console.log("user id:", userId);
 
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -30,8 +31,10 @@ const NewGroup = () => {
     
             // Check if the group was created successfully
             if (response.ok) {
+                //groupid created
+                console.log('groupId: ', data.groupId);
                 setShowCode(true);
-                setCode(data.code);
+                setCode(data.code); // Access the group code here
                 setSuccessMessage('Group created successfully!');
                 setErrorMessage('');
             } else {
@@ -75,7 +78,7 @@ const NewGroup = () => {
                     <label htmlFor='description' className='text-lg font-bold mb-2'>Description</label>
                     <textarea
                         id='description'
-                        value={description}
+                        defaultValue={description}
                         onChange={(event) => setDescription(event.target.value)}
                         className='border rounded-lg py-2 px-3 mb-2'
                     />

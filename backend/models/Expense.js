@@ -22,7 +22,7 @@ const expenseSchema = new mongoose.Schema({
         required: true,
     },
     payees: [{
-        user: {
+        _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
@@ -35,8 +35,13 @@ const expenseSchema = new mongoose.Schema({
             type: Number,
             required: true,
         }
-    }]
-})
+    }],
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group',
+        required: true,
+    },
+});
 
 // Create and export Expense model
 export const Expense = mongoose.model('Expense', expenseSchema)

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Group } from '../models/Group.js';
-import { createGroup, getGroupExpenses, getGroupById, joinGroup } from '../controller/group.controller.js';
+import { createGroup, getGroupExpenses, getGroupById, joinGroup, getGroupMembers } from '../controller/group.controller.js';
 
 const groupRouter = express.Router();
 
@@ -10,7 +10,7 @@ const groupRouter = express.Router();
 // /api/groups/:groupId
 // /api/groups/:userId
 // /api/groups/join
-
+// /api/groups/:groupId/members
 
 // Create a new group
 groupRouter.post('/register', createGroup);
@@ -26,5 +26,8 @@ groupRouter.get('/:userId', getGroupById);
 
 //join group with user id and group id
 groupRouter.post('/join', joinGroup);
+
+//get group.members and the user id username
+groupRouter.post('/:groupId/members', getGroupMembers);
 
 export default groupRouter;
