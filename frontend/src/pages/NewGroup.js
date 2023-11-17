@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const NewGroup = () => {
-    const { groupId } = useParams();
-    const { userId } = useParams();
+    const { auth } = useAuth();
+    const userId = auth.id
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -50,7 +51,7 @@ const NewGroup = () => {
         }
     }
     const handleBackToHome = () => {
-        navigate(`/home/${userId}`);
+        navigate(`/`);
     }
  
     return (

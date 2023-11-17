@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const JoinGroup = () => {
+    const { auth } = useAuth();
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false); // new state variable
-    const { userId } = useParams();
+    const userId = auth.id
     const navigate = useNavigate();
-    console.log(userId);
+    console.log('THE ID IS ', auth.id, userId);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,7 +26,7 @@ const JoinGroup = () => {
     };
 
     const handleBack = () => {
-        navigate(`/home/${userId}`);
+        navigate(`/`);
     };
 
     return (
