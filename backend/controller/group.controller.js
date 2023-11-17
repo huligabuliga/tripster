@@ -138,4 +138,29 @@ export const getGroupMembers = async (req, res) => {
   }
 }
 
+export const getGroupMemberNames = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+
+    // Find group by ID
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    const groupMembers = group.members;
+
+    // Find users with group.members that matches user.id
+    const users = await User.find({ _id: { $in: groupMembers } });
+
+    // Transform the users array to an array of objects with only username properties
+    const transformedUsers = users.map(user => (user.username));
+
+    res.status(200).json(transformedUsers);
+  } catch (error) {
+    console.error('Error getting group members:', error);
+    res.status(500).json({ message: 'Error getting group members' });
+  }
+}
   
