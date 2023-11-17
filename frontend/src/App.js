@@ -52,8 +52,8 @@ function App() {
         {/** Protected routes */}
         <Route element={<RequireAuth />} >
           <Route path='' element={<Home />} />
-          <Route path='group/:groupid' element={<Group />} />
-          <Route path='newexpense' element={<NewExpense />} />
+          <Route path='group/:groupId' element={<Group />} />
+          <Route path='/group/:groupId/newExpense' element={<NewExpense />} />
           <Route path='settleup' element={<SettleUp />} />
           <Route path='joinGroup' element={<JoinGroup />} />
           <Route path='profile/:userid' element={<Profile />} />
