@@ -41,14 +41,14 @@ function App() {
 
         {/** Protected routes */}
         <Route element={<RequireAuth />} >
-          <Route path='/home/:userId' element={<Home />} />
+          <Route path='' element={<Home />} />
           <Route path='group/:groupid' element={<Group />} />
           <Route path='newexpense' element={<NewExpense />} />
           <Route path='settleup' element={<SettleUp />} />
-          <Route path='/home/:userId/joinGroup' element={<JoinGroup />} />
+          <Route path='joinGroup' element={<JoinGroup />} />
           <Route path='profile/:userid' element={<Profile />} />
           <Route path='profile/:userid/edit' element={<EditProfile />} />
-          <Route path='/home/:userId/newGroup' element={<NewGroup />} />
+          <Route path='newGroup' element={<NewGroup />} />
           <Route path='users/:userId' exact component={UserInfo} />
         </Route>
         

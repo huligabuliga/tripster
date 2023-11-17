@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import GroupCard from '../components/GroupCard'
+import useAuth from '../hooks/useAuth'
 import '../cftools.css';
 
 const Home = () => {
-    const { userId } = useParams();
+    const { auth } = useAuth();
     const [groups, setGroups] = useState([]);
 
     const fetchGroups = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/api/users/${userId}/groups`);
+            const response = await fetch(`http://localhost:3001/api/users/${auth.id}/groups`);
             const data = await response.json();
+            // console.log('User ID is ', auth.id)
             setGroups(data);
         }
         catch(error) {
@@ -20,7 +22,7 @@ const Home = () => {
 
     useEffect(() => {
         fetchGroups();
-    }, [userId]);
+    }, [auth.id]);
 
     return (
         <div className='w-full min-h-screen'>
@@ -43,14 +45,14 @@ const Home = () => {
 
             {/** Buttons */}
             <div className='flex justify-evenly mt-2'>
-                <Link to={`/home/${userId}/joinGroup`}>
+                <Link to={`/joinGroup`}>
                     <button
                         className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                         Join Group
                     </button>
                 </Link>
 
-                <Link to={`/home/${userId}/newGroup`}>
+                <Link to={`/newGroup`}>
                     <button
                         className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                         New Group

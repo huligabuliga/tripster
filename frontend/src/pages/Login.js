@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { FaRegEnvelope, FaKey } from "react-icons/fa"
+import axios from "axios";
 import newRequest from '../utils/newRequest'
 import useAuth from '../hooks/useAuth';
 import '../cftools.css';
@@ -18,23 +19,18 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await newRequest.post('http://localhost:3001/api/auth/login', {email, password})
-            // console.log(JSON.stringify(res?.data))
-            console.log(res)
-
-            // Store access token
-            const accessToken = res?.data?.accessToken
-            console.log('ACCESS TOKEN: ', accessToken)
+            const res = await axios.post('http://localhost:3001/api/auth/login', JSON.stringify({email, password}),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
 
             // Store
-            setAuth({ user: email, password, accessToken})
-
-            // localStorage.setItem('currentUser', JSON.stringify(res.data))
-            // navigate to user's homepage
-            navigate(`/home/${res.data._id}`)
+            setAuth({ id: res.data._id, user: email, password})
 
             // Navigate to homepage or previous route (any other page user tried to access but was unauthenticated)
-            // navigate(from, { replace: true })
+            navigate(from, { replace: true })
         } 
         catch (error) {
             setError(error.response.data.message)
