@@ -8,6 +8,7 @@ const ExpenseCard = ({ expense, userId }) => {
     const [userShare, setUserShare] = useState(0);
     const [userPaid, setUserPaid] = useState(false);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const [isPaid, setIsPaid] = useState(false);
 
     const handlePay = () => {
       navigate(`/group/${groupId}/pay/${expense._id}`);
@@ -59,7 +60,7 @@ const ExpenseCard = ({ expense, userId }) => {
   <div className='bg-green-500 text-white rounded px-2 py-1'>Paid</div> : 
   <div className='bg-red-500 text-white rounded px-2 py-1'>Not Paid</div>
 }
-<button onClick={handlePay} className='bg-blue-500 text-white rounded px-2 py-1 mt-2'>Pay</button>
+<button onClick={handlePay} className='bg-blue-500 text-white rounded px-2 py-1 mt-2' style={{ display: userPaid ? 'none' : 'block' }}>Pay</button>
         </div>
     </div>
   )
