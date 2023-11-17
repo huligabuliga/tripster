@@ -16,6 +16,7 @@ import NewGroup from './pages/NewGroup';
 import UserInfo from './pages/GetUser';
 import NotFound from './pages/NotFound'
 import RequireAuth from './components/RequireAuth';
+import Members from './pages/Members';
 
 
 function App() {
@@ -53,7 +54,8 @@ function App() {
         <Route element={<RequireAuth />} >
           <Route path='' element={<Home />} />
           <Route path='group/:groupId' element={<Group />} />
-          <Route path='/group/:groupId/newExpense' element={<NewExpense />} />
+          <Route path='group/:groupId/newExpense' element={<NewExpense />} />
+          <Route path='group/:groupId/members' element={<Members />} />
           <Route path='settleup' element={<SettleUp />} />
           <Route path='joinGroup' element={<JoinGroup />} />
           <Route path='profile/:userid' element={<Profile />} />
