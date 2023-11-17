@@ -1,5 +1,5 @@
 import React from 'react'
-import '../navbar.css'
+// import '../navbar.css'
 import { Link, useLocation } from 'react-router-dom'
 
 const Sidebar = ({ userId }) => {
