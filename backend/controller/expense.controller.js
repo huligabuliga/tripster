@@ -2,6 +2,7 @@ import { Group } from "../models/Group.js";
 import { User } from "../models/user.model.js";
 import { Expense } from "../models/Expense.js";
 import mongoose from 'mongoose';
+import { sendNotification } from './notification.controller.js';
 
 //getExpensesById
 export const getExpenseById = async (req, res) => {
@@ -51,6 +52,12 @@ export const createExpense = async (req, res) => {
             }
             group.expenses.push(newExpense._id);
             await group.save();
+
+            const groupMembers = group.members;
+            const notificationMessage = `New expense added in group ${group.name}.`;
+            groupMembers.forEach(member => {
+              sendNotification(notificationMessage, member, groupId);
+            });
     
             res.status(201).json({ message: 'Expense created successfully' });
         } catch (error) {
@@ -74,6 +81,16 @@ export const updateExpenseById = async (req, res) => {
       res.status(400).json({ message: 'Update failed.' });
     } else {
       res.status(200).json({ message: 'Expense updated successfully.' });
+
+      const expense = await Expense.findById(expenseId);
+      const allPaymentsCompleted = expense.payees.every(payee => payee.paid);
+
+      if (!allPaymentsCompleted) {
+        // Si no todos los pagos están completos, enviar una notificación al usuario que no ha pagado
+        const userToNotify = expense.payees.find(payee => !payee.paid);
+        const notificationMessage = `You have pending payment in group ${expense.group}.`;
+        sendNotification(notificationMessage, userToNotify._id, expense.group);
+      }
     }
   } catch (err) {
     res.status(500).json({ message: err.message });

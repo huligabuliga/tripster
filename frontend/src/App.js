@@ -18,6 +18,7 @@ import NotFound from './pages/NotFound'
 import RequireAuth from './components/RequireAuth';
 import Members from './pages/Members';
 import Pay from './pages/Pay';
+import Notifications from './pages/Notifications';
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
         { /** Catch all route */}
         <Route path='*' element={<NotFound />} />
       </Routes>
+      <Notifications />
       {/** If mobile size, display bottom navbar */}
       {isMobile && <Navbar />}
     </div>

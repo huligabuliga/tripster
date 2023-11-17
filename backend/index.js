@@ -9,6 +9,7 @@ import groupRouter from './routes/groupRoutes.js'
 import expenseRouter from './routes/expenseRoutes.js'
 import transactionRouter from './routes/transactionRoutes.js'
 import cookieParser from 'cookie-parser'
+import notificationRouter from './routes/notificationRoutes.js';
 
 dotenv.config()
 const PORT = process.env.PORT || 3001
@@ -35,6 +36,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/expenses', expenseRouter)
 app.use('/api/transactions', transactionRouter)
+app.use('/api/notifications', notificationRouter);
 
 // Mount groupRouter here
 app.use('/api/groups', groupRouter)
