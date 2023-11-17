@@ -1,7 +1,7 @@
 import { Group } from "../models/Group.js";
 import { User } from "../models/user.model.js";
 import { Expense } from "../models/Expense.js";
-
+import mongoose from 'mongoose';
 
 //getExpensesById
 export const getExpenseById = async (req, res) => {
@@ -58,3 +58,24 @@ export const createExpense = async (req, res) => {
             res.status(500).json({ message: 'Internal server error: ' + error.message });
         }
     };
+
+// updateExpenseById
+export const updateExpenseById = async (req, res) => {
+  const { expenseId } = req.params;
+  const { userId, paid, evidence } = req.body;
+
+  try {
+    const result = await Expense.updateOne(
+      { _id: expenseId, 'payees._id': userId },
+      { $set: { 'payees.$.paid': paid, 'payees.$.evidence': evidence } }
+    );
+
+    if (result.nModified == 0) {
+      res.status(400).json({ message: 'Update failed.' });
+    } else {
+      res.status(200).json({ message: 'Expense updated successfully.' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
