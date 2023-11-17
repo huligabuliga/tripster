@@ -1,7 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@300;400&display=swap');
+
 .cfbg_01 {
     background-image: url('../public/backgrounds/cf_background1.png');
     background-attachment: fixed;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.cfbg_02 {
+    background-image: url('../public/backgrounds/cf_background2.png');
+    background-attachment: fixed;
+    background-size: auto 55vh;
+    background-position: top center;
+    background-repeat: no-repeat;
+    height: 50vh;
+    width: 100vw;
+}
+
+.cfhvhm {
+    background-color: #066E4B;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+    .cfhvhm:hover {
+        background-color: #07BD4C;
+    }
+
+.home_centered_block {
+    padding-bottom: 20vh;
+    padding-top: 10vh;
+}
+
+.home-main-block {
+    font-family: Overpass, sans-serif;
+    text-align: center;
 }
