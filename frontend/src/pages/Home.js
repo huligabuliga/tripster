@@ -25,12 +25,12 @@ const Home = () => {
     }, [auth.id]);
 
     return (
-        <div className='w-full min-h-screen'>
+        <div className='w-full min-h-screen home-main-block'>
             {/** Header */}
-            <div className=''>
-                <h2 className='text-3xl font-bold mb-2 text-center'>Home</h2>
+            <div className='cfbg_02' ></div>
+            <div style={{ paddingBottom: '60px', paddingTop: '20px' }}>
+                <h2 className='text-3xl font-bold mb-2 text-center'>Welcome!</h2>
             </div>
-
             {/** Groups */}
             <div className='flex flex-wrap justify-center'>
                 {groups.map((group) => (
@@ -47,14 +47,14 @@ const Home = () => {
             <div className='flex justify-evenly mt-2'>
                 <Link to={`/joinGroup`}>
                     <button
-                        className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
+                        className="rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer cfhvhm">
                         Join Group
                     </button>
                 </Link>
 
                 <Link to={`/newGroup`}>
                     <button
-                        className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
+                        className="rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer cfhvhm">
                         New Group
                     </button>
                 </Link>
