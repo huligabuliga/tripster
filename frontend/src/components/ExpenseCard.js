@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-
+import { useNavigate, useParams } from 'react-router-dom'; 
 const ExpenseCard = ({ expense, userId }) => {
+    const { groupId} = useParams()
+    const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
     const [userShare, setUserShare] = useState(0);
+    const [userPaid, setUserPaid] = useState(false);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    const handlePay = () => {
+      navigate(`/group/${groupId}/pay/${expense._id}`);
+    };
 
     useEffect(() => {
       const fetchUserInfo = async () => {
@@ -23,6 +30,7 @@ const ExpenseCard = ({ expense, userId }) => {
         if (userPayee) {
           console.log("userPayee.shareAmount: ", userPayee.shareAmount);
           setUserShare(userPayee.shareAmount);
+          setUserPaid(userPayee.paid);
         }
       };
     
@@ -47,6 +55,11 @@ const ExpenseCard = ({ expense, userId }) => {
         <div className='w-1/5 flex flex-col justify-center text-center'>
             <p className='text-xs sm:text-sm'>You owe:</p>
             <p className='text-xs sm:text-sm font-semibold'>{userShare}</p>
+            {userPaid ? 
+  <div className='bg-green-500 text-white rounded px-2 py-1'>Paid</div> : 
+  <div className='bg-red-500 text-white rounded px-2 py-1'>Not Paid</div>
+}
+<button onClick={handlePay} className='bg-blue-500 text-white rounded px-2 py-1 mt-2'>Pay</button>
         </div>
     </div>
   )

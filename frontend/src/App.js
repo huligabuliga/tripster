@@ -16,7 +16,7 @@ import NewGroup from './pages/NewGroup';
 import UserInfo from './pages/GetUser';
 import NotFound from './pages/NotFound'
 import RequireAuth from './components/RequireAuth';
-
+import Pay from './pages/Pay';
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -60,6 +60,8 @@ function App() {
           <Route path='profile/:userid/edit' element={<EditProfile />} />
           <Route path='newGroup' element={<NewGroup />} />
           <Route path='users/:userId' exact component={UserInfo} />
+          {/* pay page */}
+          <Route path='/group/:groupId/pay/:expenseId' element={<Pay />} />
         </Route>
         
         { /** Catch all route */}

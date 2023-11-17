@@ -34,7 +34,16 @@ const expenseSchema = new mongoose.Schema({
         sharePercentage: {
             type: Number,
             required: true,
-        }
+        },
+        paid: {
+            type: Boolean,
+            default: false,
+          },
+        evidence: {
+            // image of payment
+            type: String,
+            default: '',
+        },
     }],
     group: {
         type: mongoose.Schema.Types.ObjectId,

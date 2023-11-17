@@ -1,6 +1,6 @@
 import express from 'express'
 import { Expense } from '../models/Expense.js'
-import { getExpenseById, createExpense } from '../controller/expense.controller.js'
+import { getExpenseById, createExpense, updateExpenseById } from '../controller/expense.controller.js'
 
 const expenseRouter = express.Router()
 
@@ -13,6 +13,9 @@ expenseRouter.get('/:expenseId', getExpenseById)
 
 //create expense
 expenseRouter.post('/register', createExpense)
+
+//update expense by id
+expenseRouter.put('/:expenseId/update', updateExpenseById)
 
 
 export default expenseRouter
