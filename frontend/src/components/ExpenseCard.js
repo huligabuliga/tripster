@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
-const ExpenseCard = ({ expense}) => {
+const ExpenseCard = ({ expense, userId }) => {
     const [userInfo, setUserInfo] = useState(null);
+    const [userShare, setUserShare] = useState(0);
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     useEffect(() => {
       const fetchUserInfo = async () => {
@@ -13,10 +15,23 @@ const ExpenseCard = ({ expense}) => {
           console.error(err);
         }
       };
-  
+    
+      const findUserShare = () => {
+        const userPayee = expense.payees.find(payee => payee._id === currentUser._id);
+        console.log('userId:', userId);
+        console.log("userPayee: ", userPayee);
+        if (userPayee) {
+          console.log("userPayee.shareAmount: ", userPayee.shareAmount);
+          setUserShare(userPayee.shareAmount);
+        }
+      };
+    
+      console.log("expense: ", expense);
       fetchUserInfo();
-    }, [expense]);
-
+      if (expense && expense.payees) {
+        findUserShare();
+      }
+    }, [expense, userId]);
 
   return (
     <div className='flex flex-wrap w-3/4 sm:w-4/5 align-center justify-between rounded-xl m-4 p-2 shadow-xl'>
@@ -31,7 +46,7 @@ const ExpenseCard = ({ expense}) => {
         </div>
         <div className='w-1/5 flex flex-col justify-center text-center'>
             <p className='text-xs sm:text-sm'>You owe:</p>
-            <p className='text-xs sm:text-sm font-semibold'>$$$</p>
+            <p className='text-xs sm:text-sm font-semibold'>{userShare}</p>
         </div>
     </div>
   )

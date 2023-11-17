@@ -101,6 +101,9 @@ const NewExpense = () => {
     
     // Set new state to payees
     setPayees(updatedPayees)
+
+    // Return the updated payees array
+    return updatedPayees;
   }
 
   // Updates state of selected categories

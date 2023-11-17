@@ -8,8 +8,8 @@ export const getExpenseById = async (req, res) => {
   try {
     const expenseId = req.params.expenseId;
 
-    // Find expense by ID
-    const expense = await Expense.findById(expenseId);
+    // Find expense by ID and populate the payees field
+    const expense = await Expense.findById(expenseId).populate('payees');
 
     if (!expense) {
       return res.status(404).json({ message: 'Expense not found' });

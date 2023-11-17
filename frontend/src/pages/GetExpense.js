@@ -10,6 +10,7 @@ const GroupExpenses = ({ groupId }) => {
       .then((data) => {
         setGroupExpenses(data); // Almacena las expenses en el estado del componente
       })
+      console.log("groupExpenses: ", groupExpenses)
       .catch((error) => {
         console.error('Error al obtener expenses del grupo:', error);
       });
