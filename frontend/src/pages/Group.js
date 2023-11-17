@@ -71,20 +71,17 @@ const Group = () => {
           </div>
 
           <div className="flex flex-wrap justify-around">
-         
-              <button
-                onClick={handleSettleUp} // Add onClick handler
-                className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer"
-              >
+            <Link to="/">
+              <button className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                 Settle Up
               </button>
-            
+            </Link>
             <Link to={`members`}>
               <button className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                 Members
               </button>
             </Link>
-            <Link to="/">
+            <Link to="analytics">
               <button className="bg-green-600 rounded-full font-semibold text-white px-12 py-2 my-2 cursor-pointer">
                 Analytics
               </button>

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Group } from '../models/Group.js';
-import { createGroup, getGroupExpenses, getGroupById, joinGroup, getGroupMembers } from '../controller/group.controller.js';
+import { createGroup, getGroupExpenses, getGroupById, joinGroup, getGroupMembers, getGroupMemberNames } from '../controller/group.controller.js';
 
 const groupRouter = express.Router();
 
@@ -29,5 +29,6 @@ groupRouter.post('/join', joinGroup);
 
 //get group.members and the user id username
 groupRouter.post('/:groupId/members', getGroupMembers);
+groupRouter.get('/:groupId/members', getGroupMemberNames);
 
 export default groupRouter;
