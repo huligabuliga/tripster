@@ -1,48 +1,44 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { FaHome, FaSearch, FaBell, FaUser } from 'react-icons/fa'
 
-const Navbar = () => {
+const Navbar = ({ userId }) => {
   const location = useLocation()
 
   return (
     (location.pathname === '/login' | location.pathname === '/register') ? (<div></div>) : (
-    <div className='w-screen h-16 sticky bottom-0 flex flex-row justify-around items-center bg-green-500'>
-        {/** Home */}
+    <div style={{ backgroundColor: '#262626' }} className='w-screen h-16 sticky bottom-0 flex flex-row justify-around items-center bg-green-500'>
+        {/* Home */}
         <div>
-            <Link to='/'>
+            <Link to={`/home/${userId}`}>
                 <div className='flex flex-col text-slate-50 items-center w-20'>
-                    <FaHome className='text-2xl mt-1' />
+                    <img style={{ height: '38px', width: 'auto' }} src="/cf_home_icon.png" alt="Home" />
                     <h2 className='font-semibold text-xs'>Home</h2>
                 </div>
             </Link>
         </div>
-
-        {/** Search */}
+        {/* Search */}
         <div>
             <Link to='/search'>
                 <div className='flex flex-col text-slate-50 items-center w-20'>
-                    <FaSearch className='text-2xl mt-1' />
+                    <img style={{ height: '38px', width: 'auto' }} src="/search_icon.png" alt="Search" />
                     <h2 className='font-semibold text-xs'>Search</h2>
                 </div>
             </Link>
         </div>
-
-        {/** Notifications */}
+        {/* Notifications */}
         <div>
             <Link to='notifications'>
                 <div className='flex flex-col text-slate-50 items-center w-20'>
-                    <FaBell className='text-2xl mt-1' />
+                    <img style={{ height: '38px', width: 'auto' }} src="/bell_icon.png" alt="Notifications" />
                     <h2 className='font-semibold text-xs'>Notifications</h2>
                 </div>
             </Link>
         </div>
-
-        {/** My Account */}
+        {/* My Account */}
         <div>
-            <Link to='profile/123'>
+            <Link to={`/profile/${userId}`}>
                 <div className='flex flex-col text-slate-50 items-center w-20'>
-                    <FaUser className='text-2xl mt-1' />
+                    <img style={{ height: '38px', width: 'auto' }} src="/profile_icon.png" alt="Profile" />
                     <h2 className='font-semibold text-xs'>My Account</h2>
                 </div>
             </Link>
